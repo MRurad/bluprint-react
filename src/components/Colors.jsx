@@ -7,6 +7,10 @@ import Color from "./Color";
 //Hooks
 import { useState } from "react";
 
+// Redux
+import { useDispatch, useSelector } from "react-redux";
+import { colorActions } from "../redux/slices/colorSlice";
+
 // Styles
 const styles = {
   btn: "flex justify-between items-center py-4 w-full",
@@ -14,11 +18,46 @@ const styles = {
   ul: "flex flex-wrap gap-2 pb-4",
 };
 
+const colorsData = [
+  {
+    id: 1,
+    color: "bg-black",
+    title: "Black",
+  },
+  {
+    id: 2,
+    color: "bg-white",
+    title: "White",
+  },
+  {
+    id: 3,
+    color: "bg-red-500",
+    title: "Red",
+  },
+  {
+    id: 4,
+    color: "bg-orange-500",
+    title: "Orange",
+  },
+  {
+    id: 5,
+    color: "bg-green-500",
+    title: "Green",
+  },
+];
+
 const Colors = () => {
   const [showColor, setShowColor] = useState(false);
+  const dispatch = useDispatch();
+
+  const colorsState = useSelector((state) => state.color);
 
   const toggleColor = () => {
     setShowColor(!showColor);
+  };
+
+  const setColor = (color) => {
+    dispatch(colorActions.addcolor(color));
   };
 
   return (
@@ -34,11 +73,15 @@ const Colors = () => {
       </button>
       {showColor && (
         <ul className={styles.ul}>
-          <Color color="bg-black" title="Black" />
-          <Color color="bg-white" title="White" />
-          <Color color="bg-red-500" title="Red" />
-          <Color color="bg-orange-500" title="Orange" />
-          <Color color="bg-green-500" title="Green" />
+          {colorsData.map((color) => (
+            <Color
+              selected={colorsState.includes(color.title)}
+              click={() => setColor(color.title)}
+              key={color.id}
+              color={color.color}
+              title={color.title}
+            />
+          ))}
         </ul>
       )}
     </div>

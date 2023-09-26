@@ -7,6 +7,11 @@ import Size from "./Size";
 //Hooks
 import { useState } from "react";
 
+//Redux
+
+import { useDispatch, useSelector } from "react-redux";
+import { sizeActions } from "../redux/slices/sizeSlice";
+
 // Styles
 const styles = {
   btn: "flex justify-between items-center py-4 w-full",
@@ -14,11 +19,45 @@ const styles = {
   ul: "flex flex-wrap gap-2",
 };
 
+const sizeData = [
+  {
+    id: 1,
+    title: "Extra Small",
+    name: "xs",
+  },
+  {
+    id: 2,
+    title: "Small",
+    name: "s",
+  },
+  {
+    id: 3,
+    title: "Medium",
+    name: "m",
+  },
+  {
+    id: 4,
+    title: "Large",
+    name: "l",
+  },
+  {
+    id: 5,
+    title: "Extra Large",
+    name: "xl",
+  },
+];
 const Colors = () => {
   const [showSize, setShowSize] = useState(false);
+  const dispatch = useDispatch();
+
+  const sizeState = useSelector((state) => state.size);
 
   const toggleSize = () => {
     setShowSize(!showSize);
+  };
+
+  const setSize = (size) => {
+    dispatch(sizeActions.addsize(size));
   };
 
   return (
@@ -34,11 +73,18 @@ const Colors = () => {
       </button>
       {showSize && (
         <ul className={styles.ul}>
-          <Size title="Extra Small">xs</Size>
-          <Size title="Small">s</Size>
-          <Size title="Medium">m</Size>
-          <Size title="Large">l</Size>
-          <Size title="Extra Large">xl</Size>
+          {sizeData.map((size) => (
+            <Size
+              click={() => {
+                setSize(size.name);
+              }}
+              key={size.id}
+              title={size.title}
+              selected={sizeState.includes(size.name)}
+            >
+              {size.name}
+            </Size>
+          ))}
         </ul>
       )}
     </div>

@@ -1,12 +1,13 @@
 import React from "react";
 
-const Color = ({ color, title }) => {
+const Color = ({ color, title, click, selected }) => {
   return (
     <li
+      onClick={click}
       className={`h-8 w-8 ${color} border flex items-center justify-center rounded-full cursor-pointer`}
       title={title}
     >
-      {/* <span className="h-3 w-3 rounded-full bg-gray-200"></span> */}
+      {selected && <span className="h-3 w-3 rounded-full bg-gray-200"></span>}
     </li>
   );
 };

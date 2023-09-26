@@ -1,38 +1,80 @@
 // Components
 import Size from "./Size";
 
+//Hooks
+import { useRef } from "react";
+
+//Redux
+import { productActions } from "../redux/slices/productSlice";
+import { useDispatch, useSelector } from "react-redux";
+
 // Images
 import Cart from "../images/cart.png";
 
-const ProductFilter = () => {
+const ProductFilter = ({ color, sizes }) => {
+  const dispatch = useDispatch();
+  const inputRef = useRef();
+  const { size, counter } = useSelector((state) => state.product);
+
+  const selectSize = (s) => {
+    dispatch(productActions.selectSize(s));
+  };
+  const increaseCounter = () => {
+    dispatch(productActions.increase());
+  };
+  const decreaseCount = () => {
+    dispatch(productActions.decrease());
+  };
+  const changeCounter = (c) => {
+    dispatch(productActions.setCounter(c));
+  };
+
+  console.log(size);
   return (
     <div className="col-span-4">
       {/* Color */}
       <div className="mb-10">
         <h3 className="text-xs font-bold mb-3">Product color</h3>
-        <div className="h-8 w-8 bg-orange-500 rounded-full"></div>
+        <div className={`h-8 w-8 ${color} rounded-full`}></div>
       </div>
       {/* Size */}
       <div className="mb-28">
         <h3 className="text-xs font-bold mb-3">Choose your size</h3>
         <ul className="flex flex-wrap gap-2">
-          <Size title="Extra Small">xs</Size>
-          <Size title="Small">s</Size>
-          <Size title="Medium">m</Size>
-          <Size title="Large">l</Size>
-          <Size title="Extra Large">xl</Size>
+          {sizes.map((s) => (
+            <Size
+              click={() => {
+                selectSize(s.name);
+              }}
+              key={s.name}
+              title={s.title}
+              disabled={s.aviable}
+              selected={size === s.name}
+            >
+              {s.name}
+            </Size>
+          ))}
         </ul>
       </div>
       {/* Counter */}
       <div className="flex items-center gap-6 font-black mb-8">
-        <button className="text-3xl">-</button>
+        <button onClick={decreaseCount} className="text-3xl">
+          -
+        </button>
         <input
+          onChange={() => {
+            changeCounter(inputRef.current.value);
+          }}
+          value={counter}
+          ref={inputRef}
           type="number"
           min="1"
           max="100"
           className="border h-14 text-2xl text-center rounded-md"
         />
-        <button className="text-3xl">+</button>
+        <button onClick={increaseCounter} className="text-3xl">
+          +
+        </button>
       </div>
       {/* Add To Cart */}
       <button className="w-full  flex rounded-lg font-black uppercase duration-200 justify-between items-center bg-[#1d1d1d] hover:bg-[#0075ff] text-white text-xl px-8 py-6">

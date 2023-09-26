@@ -1,12 +1,19 @@
+// Images
+import Cap from "../images/cap.png";
+import Tshirt from "../images/t-shirt.png";
 // Router
 import { Link } from "react-router-dom";
 
-const Product = ({ img, title, price, category }) => {
+const Product = ({ img, title, price, category, id }) => {
   return (
     <div className="col-span-4 cursor-pointer">
-      <Link to={`/products/${title}`}>
+      <Link to={`/products/${id}`}>
         <div className="mb-4 border border-neutral-200 rounded-lg">
-          <img src={img} alt="" className="w-full" />
+          <img
+            src={require(`../images/${img}.png`)}
+            alt=""
+            className="w-full"
+          />
         </div>
         <div className="flex justify-between font-bold">
           <div>

@@ -6,7 +6,6 @@ const categoryReducer = createSlice({
   reducers: {
     addCategory: (state, action) => {
       const category = action.payload;
-
       if (state.includes(category)) {
         const index = state.findIndex((c) => c === category);
         state.splice(index, 1);
