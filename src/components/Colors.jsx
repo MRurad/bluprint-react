@@ -44,6 +44,11 @@ const colorsData = [
     color: "bg-green-500",
     title: "Green",
   },
+  {
+    id: 6,
+    color: "bg-blue-500",
+    title: "Blue",
+  },
 ];
 
 const Colors = () => {

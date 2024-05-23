@@ -2,10 +2,14 @@
 import Size from "./Size";
 
 //Hooks
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
+
+//router
+import { useNavigate } from "react-router-dom";
 
 //Redux
 import { productActions } from "../redux/slices/productSlice";
+import { cartActions } from "../redux/slices/cartSlice";
 import { useDispatch, useSelector } from "react-redux";
 
 // Images
@@ -14,7 +18,10 @@ import Cart from "../images/cart.png";
 const ProductFilter = ({ color, sizes }) => {
   const dispatch = useDispatch();
   const inputRef = useRef();
-  const { size, counter } = useSelector((state) => state.product);
+  const history = useNavigate();
+  const { size, counter, category, name, id, img, price } = useSelector(
+    (state) => state.product
+  );
 
   const selectSize = (s) => {
     dispatch(productActions.selectSize(s));
@@ -29,7 +36,24 @@ const ProductFilter = ({ color, sizes }) => {
     dispatch(productActions.setCounter(c));
   };
 
-  console.log(size);
+  const addToCart = () => {
+    if (!size) return;
+    dispatch(
+      cartActions.addToCart({
+        name: name,
+        category: category,
+        size: size,
+        id: id,
+        img: img,
+        price: price,
+        counter: counter,
+        color: color,
+      })
+    );
+
+    // history("/cart");
+  };
+
   return (
     <div className="col-span-4">
       {/* Color */}
@@ -77,7 +101,12 @@ const ProductFilter = ({ color, sizes }) => {
         </button>
       </div>
       {/* Add To Cart */}
-      <button className="w-full  flex rounded-lg font-black uppercase duration-200 justify-between items-center bg-[#1d1d1d] hover:bg-[#0075ff] text-white text-xl px-8 py-6">
+      <button
+        onClick={() => {
+          addToCart();
+        }}
+        className="w-full  flex rounded-lg font-black uppercase duration-200 justify-between items-center bg-[#1d1d1d] hover:bg-[#0075ff] text-white text-xl px-8 py-6"
+      >
         Add To Cart
         <span>
           <img src={Cart} alt="cart" />

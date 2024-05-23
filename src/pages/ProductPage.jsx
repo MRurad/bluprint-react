@@ -4,30 +4,55 @@ import ProductImage from "../components/ProductImage";
 import ProductFilter from "../components/ProductFilter";
 // Router
 import { useParams } from "react-router-dom";
+//Hooks
+import { useEffect } from "react";
+
 // Redux
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { productActions } from "../redux/slices/productSlice";
 
 const ProductPage = () => {
+  const dispatch = useDispatch();
+
   const { id } = useParams();
-  const productData = useSelector((state) =>
+  const { color, category, price, name, sizes, image } = useSelector((state) =>
     state.products.find((product) => product.id === +id)
   );
 
-  let colorClass = `bg-${productData.color}-500`;
-  if (productData.color === "black" || productData.color === "white") {
-    colorClass = `bg-${productData.color}`;
+  console.log(color);
+
+  const addToProduct = () => {
+    dispatch(
+      productActions.uptadeProduct({
+        category: category,
+        name: name,
+        price: price,
+        color: color,
+        image: image,
+        color: color,
+      })
+    );
+  };
+
+  useEffect(() => {
+    addToProduct();
+  }, []);
+
+  useEffect(() => {
+    dispatch(productActions.selectSize(null));
+    dispatch(productActions.setCounter(1));
+  }, [id]);
+
+  let colorClass = `bg-${color}-500`;
+  if (color === "black" || color === "white") {
+    colorClass = `bg-${color}`;
   }
 
-  console.log(productData);
   return (
-    <div className="grid grid-cols-12 gap-10">
-      <ProductDetail
-        category={productData.category}
-        name={productData.name}
-        price={productData.price}
-      />
-      <ProductImage img={productData.image} />
-      <ProductFilter color={colorClass} sizes={productData.sizes} />
+    <div className="grid grid-cols-12  h-[70vh] gap-10">
+      <ProductDetail category={category} name={name} price={price} />
+      <ProductImage img={image} />
+      <ProductFilter color={colorClass} sizes={sizes} />
     </div>
   );
 };

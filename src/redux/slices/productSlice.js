@@ -5,10 +5,12 @@ const productSlice = createSlice({
   initialState: {
     category: null,
     name: null,
+    color: null,
     counter: 1,
     size: null,
     img: null,
     price: null,
+    id: null,
   },
   reducers: {
     selectSize: (state, action) => {
@@ -19,6 +21,15 @@ const productSlice = createSlice({
         state.size = selectedSize;
       }
     },
+    uptadeProduct: (state, action) => {
+      const { category, name, image, price, color } = action.payload;
+      state.category = category;
+      state.name = name;
+      state.img = image;
+      state.price = price;
+      state.color = color;
+      state.id = Math.random().toString();
+    },
     increase: (state) => {
       state.counter++;
     },
@@ -28,7 +39,7 @@ const productSlice = createSlice({
       }
     },
     setCounter: (state, action) => {
-      state.counter = action.payload;
+      state.counter = +action.payload;
     },
   },
 });

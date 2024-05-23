@@ -3,7 +3,7 @@ import Empty from "../images/Empty.png";
 
 const EmptyCart = () => {
   return (
-    <div className="col-span-9 flex flex-col items-center justify-center h-full">
+    <div className="col-span-9 flex flex-col items-center justify-center h-[70vh]">
       <div>
         <img src={Empty} alt="empty" />
       </div>

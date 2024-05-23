@@ -6,6 +6,10 @@ module.exports = {
       fontFamily: {
         satoshi: ["Satoshi"],
       },
+      // gridTemplateRows: {
+      //   // Complex site-specific column configuration
+      //   footer: "370px 330px 115px",
+      // },
     },
   },
   plugins: [],
